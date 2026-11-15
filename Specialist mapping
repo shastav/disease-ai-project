@@ -1,0 +1,79 @@
+dataset_disease,BODHI_condition,specialist,weight,match_type
+Psoriasis,Psoriasis,Dermatologist,very_high,Exact
+Psoriasis,Psoriasis,Immunologist,high,Exact
+Psoriasis,Psoriasis,Internal medicine specialist,medium,Exact
+Varicose Veins,Varicose veins,General Surgeon,very_high,Exact
+Varicose Veins,Varicose veins,Vascular medicine specialist,high,Exact
+Typhoid,Typhoid fever,General Physician,high,Synonym
+Typhoid,Typhoid fever,Paediatrician,low,Synonym
+Typhoid,Typhoid fever,Internal medicine specialist,very_high,Synonym
+Chicken pox,Varicella Infection,Dermatologist,low,Synonym
+Chicken pox,Varicella Infection,General Physician,very_high,Synonym
+Chicken pox,Varicella Infection,Paediatrician,medium,Synonym
+Chicken pox,Varicella Infection,Internal medicine specialist,high,Synonym
+Impetigo,Impetigo,Dermatologist,very_high,Exact
+Impetigo,Impetigo,Paediatrician,very_high,Exact
+Dengue,Dengue fever,General Physician,very_high,Synonym
+Dengue,Dengue fever,Paediatrician,low,Synonym
+Dengue,Dengue fever,Internal medicine specialist,very_high,Synonym
+Fungal infection,Manual assignment,Dermatologist,Not provided,Manual project routing
+Fungal infection,Manual assignment,General Physician,Not provided,Manual project routing
+Common Cold,Manual assignment,General Physician,Not provided,Manual project routing
+Pneumonia,Pneumonia,General Physician,low,Exact
+Pneumonia,Pneumonia,Paediatrician,medium,Exact
+Pneumonia,Pneumonia,Pulmonologist,very_high,Exact
+Pneumonia,Pneumonia,Internal medicine specialist,very_high,Exact
+Dimorphic Hemorrhoids,Hemorrhoids,Gastroenterologist,very_high,Synonym
+Dimorphic Hemorrhoids,Hemorrhoids,General Physician,medium,Synonym
+Dimorphic Hemorrhoids,Hemorrhoids,General Surgeon,very_high,Synonym
+Dimorphic Hemorrhoids,Hemorrhoids,Internal medicine specialist,medium,Synonym
+Arthritis,Arthritis,General Physician,medium,Exact
+Arthritis,Arthritis,Orthopedic,very_high,Exact
+Arthritis,Arthritis,Spine Surgeon,medium,Exact
+Acne,Acne vulgaris,Dermatologist,very_high,Synonym
+Acne,Acne vulgaris,Immunologist,medium,Synonym
+Acne,Acne vulgaris,Internal medicine specialist,high,Synonym
+Bronchial Asthma,Asthma,General Physician,medium,Synonym
+Bronchial Asthma,Asthma,Paediatrician,medium,Synonym
+Bronchial Asthma,Asthma,Pulmonologist,very_high,Synonym
+Bronchial Asthma,Asthma,Internal medicine specialist,high,Synonym
+Hypertension,Hypertension,General Physician,high,Exact
+Hypertension,Hypertension,Nephrologist,low,Exact
+Hypertension,Hypertension,Internal medicine specialist,very_high,Exact
+Migraine,Migraine,General Physician,very_high,Exact
+Migraine,Migraine,Neurologist,medium,Exact
+Migraine,Migraine,Ophthalmologist,low,Exact
+Migraine,Migraine,Internal medicine specialist,high,Exact
+Cervical spondylosis,Cervical Spondylosis,General Physician,medium,Exact
+Cervical spondylosis,Cervical Spondylosis,Orthopedic,very_high,Exact
+Cervical spondylosis,Cervical Spondylosis,Neurologist,high,Exact
+Cervical spondylosis,Cervical Spondylosis,Spine Surgeon,medium,Exact
+Jaundice,Manual assignment,General Physician,Not provided,Manual project routing
+Jaundice,Manual assignment,Gastroenterologist,Not provided,Manual project routing
+Malaria,Malaria,General Physician,very_high,Exact
+Malaria,Malaria,Paediatrician,medium,Exact
+Malaria,Malaria,Internal medicine specialist,very_high,Exact
+urinary tract infection,UTI (Urinary tract infectious disease),General Physician,very_high,Synonym
+urinary tract infection,UTI (Urinary tract infectious disease),Gynaecologist,low,Synonym
+urinary tract infection,UTI (Urinary tract infectious disease),Nephrologist,very_high,Synonym
+urinary tract infection,UTI (Urinary tract infectious disease),Urologist,medium,Synonym
+urinary tract infection,UTI (Urinary tract infectious disease),Obstetrician,low,Synonym
+urinary tract infection,UTI (Urinary tract infectious disease),Internal medicine specialist,very_high,Synonym
+allergy,Allergic rhinitis,ENT,very_high,Approximate
+allergy,Allergic rhinitis,General Physician,medium,Approximate
+allergy,Allergic rhinitis,Pulmonologist,low,Approximate
+allergy,Allergic rhinitis,Immunologist,medium,Approximate
+allergy,Allergic rhinitis,Allergy specialist,high,Approximate
+allergy,Allergic rhinitis,Internal medicine specialist,high,Approximate
+gastroesophageal reflux disease,Gastroesophageal reflux disease,Gastroenterologist,very_high,Exact
+gastroesophageal reflux disease,Gastroesophageal reflux disease,General Physician,high,Exact
+gastroesophageal reflux disease,Gastroesophageal reflux disease,General Surgeon,low,Exact
+gastroesophageal reflux disease,Gastroesophageal reflux disease,Internal medicine specialist,high,Exact
+drug reaction,Fixed drug eruptions,Dermatologist,very_high,Approximate
+drug reaction,Fixed drug eruptions,Internal medicine specialist,medium,Approximate
+peptic ulcer disease,Manual assignment,Gastroenterologist,Not provided,Manual project routing
+peptic ulcer disease,Manual assignment,General Physician,Not provided,Manual project routing
+diabetes,Diabetes Type 2,General Physician,medium,Approximate
+diabetes,Diabetes Type 2,Endocrinologist,very_high,Approximate
+diabetes,Diabetes Type 2,Diabetologist,very_high,Approximate
+diabetes,Diabetes Type 2,Internal medicine specialist,very_high,Approximate
