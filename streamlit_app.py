@@ -3,7 +3,6 @@ import streamlit as st
 import pandas as pd
 import joblib
 from pathlib import Path
-import html
 
 # ==========================================
 # 1. PAGE CONFIGURATION
@@ -26,7 +25,9 @@ def load_files():
     model = joblib.load(BASE_DIR / "disease_model.pkl")
     vectorizer = joblib.load(BASE_DIR / "tfidf_vectorizer.pkl")
     specialists_df = pd.read_csv(BASE_DIR / "specialist_mapping.csv")
+
     return model, vectorizer, specialists_df
+
 
 model, vectorizer, specialists_df = load_files()
 
@@ -44,7 +45,7 @@ st.markdown("""
     font-family: 'Segoe UI', Arial, sans-serif;
 }
 
-/* Main content width */
+/* Main content */
 .block-container {
     max-width: 880px;
     padding-top: 3rem;
@@ -67,12 +68,12 @@ st.markdown("""
     margin-bottom: 35px;
 }
 
-/* Section headings */
+/* Headings */
 h2, h3 {
     color: #263B53 !important;
 }
 
-/* Text */
+/* General text */
 p, label {
     color: #29394B;
 }
@@ -104,7 +105,6 @@ p, label {
     width: 100%;
 }
 
-/* Force button text to remain visible */
 .stButton > button p,
 .stButton > button span,
 .stButton > button div {
@@ -115,10 +115,9 @@ p, label {
 .stButton > button:hover {
     background-color: #1B2D42 !important;
     border-color: #1B2D42 !important;
-    color: #FFFFFF !important;
 }
 
-/* Result cards */
+/* Result card */
 .result-card {
     background: #FFFFFF;
     border: 1px solid #E7E2D8;
@@ -141,33 +140,15 @@ p, label {
     font-weight: 700;
 }
 
-/* Specialist text */
-.specialist-item {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: baseline;
-    gap: 5px;
-    margin: 12px 0;
-}
-
-.specialist-name {
-    color: #183153 !important;
-    font-size: 15px;
-    font-weight: 750;
-}
-
-.specialist-detail {
-    color: #596777 !important;
-    font-size: 14px;
+/* Specialist names */
+.specialist-heading {
+    color: #183153;
+    font-size: 16px;
+    font-weight: 700;
 }
 
 /* Disclaimer */
-.disclaimer {
-    background: #F1EFE9;
-    border: 1px solid #E7E2D8;
-    border-radius: 14px;
-    padding: 17px;
-    margin-top: 25px;
+.disclaimer-text {
     color: #35475A;
     font-size: 13px;
     line-height: 1.8;
@@ -260,109 +241,162 @@ if analyse:
 
     else:
 
-        symptoms_vec = vectorizer.transform([symptoms])
-        prediction = model.predict(symptoms_vec)[0]
+        try:
+            symptoms_vec = vectorizer.transform([symptoms])
+            prediction = model.predict(symptoms_vec)[0]
 
-        specialists = specialists_df[
-            specialists_df["dataset_disease"] == prediction
-        ]
+            # Find the correct disease column
+            if "dataset_disease" in specialists_df.columns:
+                disease_column = "dataset_disease"
+            elif "disease" in specialists_df.columns:
+                disease_column = "disease"
+            else:
+                st.error(
+                    "The specialist mapping file is missing "
+                    "its disease column."
+                )
+                st.stop()
 
-        st.markdown("---")
-        st.markdown("## Results")
+            if "specialist" not in specialists_df.columns:
+                st.error(
+                    "The specialist mapping file is missing "
+                    "its specialist column."
+                )
+                st.stop()
 
-        # Predicted condition
-        st.markdown(
-            f"""
-            <div class="result-card">
-                <div class="result-label">PREDICTED CONDITION</div>
-                <div class="result-value">
-                    {html.escape(str(prediction))}
+            # Case-insensitive disease matching
+            specialists = specialists_df[
+                specialists_df[disease_column]
+                .astype(str)
+                .str.strip()
+                .str.casefold()
+                == str(prediction).strip().casefold()
+            ].copy()
+
+            st.markdown("---")
+            st.markdown("## Results")
+
+            # Predicted condition
+            st.markdown(
+                f"""
+                <div class="result-card">
+                    <div class="result-label">
+                        PREDICTED CONDITION
+                    </div>
+                    <div class="result-value">
+                        {prediction}
+                    </div>
                 </div>
-            </div>
-            """,
-            unsafe_allow_html=True
-        )
+                """,
+                unsafe_allow_html=True
+            )
 
-        # Specialist information
-        st.markdown("### Relevant medical specialists")
+            # ======================================
+            # SPECIALIST RECOMMENDATIONS
+            # ======================================
 
-        specialist_html = ""
+            st.markdown("### Relevant medical specialists")
 
-        if len(specialists) > 0:
+            if not specialists.empty:
 
-            for _, row in specialists.iterrows():
+                # Remove duplicate specialist names
+                specialists = specialists.drop_duplicates(
+                    subset=["specialist"]
+                )
 
-                specialist = html.escape(str(row["specialist"]))
-                match_type = html.escape(str(row["match_type"]))
-                weight = html.escape(str(row["weight"]))
+                for _, row in specialists.iterrows():
 
-                if match_type == "Manual project routing":
-                    detail = "Manual project assignment"
-                else:
-                    detail = f"{match_type}, {weight}"
+                    specialist = str(row["specialist"]).strip()
 
-                specialist_html += f"""
-                <div class="specialist-item">
-                    <span class="specialist-name">
-                        {specialist}
-                    </span>
-                    <span class="specialist-detail">
-                        — {detail}
-                    </span>
-                </div>
-                """
+                    if not specialist or specialist.lower() == "nan":
+                        continue
 
-        else:
+                    match_type = str(
+                        row.get("match_type", "")
+                    ).strip()
 
-            specialist_html = """
-            <p class="specialist-detail">
-                No specialist information is available.
-            </p>
-            """
+                    weight = str(
+                        row.get("weight", "")
+                    ).strip()
 
-        st.markdown(
-            f"""
-            <div class="result-card">
-                {specialist_html}
-            </div>
-            """,
-            unsafe_allow_html=True
-        )
+                    # Create readable descriptions
+                    if match_type == "Manual project routing":
 
-        st.caption(
-            "Specialist suggestions are project-generated routing "
-            "information, not verified medical referrals."
-        )
+                        detail = "Manual project assignment"
+
+                    elif match_type and match_type.lower() != "nan":
+
+                        if weight and weight.lower() != "nan":
+                            detail = f"{match_type} · {weight}"
+                        else:
+                            detail = match_type
+
+                    else:
+
+                        detail = "Project mapping"
+
+                    # Native Streamlit rendering, not HTML
+                    with st.container(border=True):
+
+                        st.markdown(
+                            f"**{specialist}**"
+                        )
+
+                        st.caption(detail)
+
+            else:
+
+                with st.container(border=True):
+                    st.write(
+                        "No specialist information is available "
+                        "for this predicted condition."
+                    )
+
+            st.caption(
+                "Specialist suggestions are project-generated "
+                "routing information, not verified medical referrals."
+            )
+
+        except Exception as e:
+
+            st.error(
+                "Something went wrong while analysing the input."
+            )
+
+            st.exception(e)
 
 # ==========================================
 # 8. ACCURACY AND DISCLAIMER
 # ==========================================
 
-# ==========================================
-# 8. ACCURACY AND DISCLAIMER
-# ==========================================
+st.markdown("---")
 
-# ==========================================
-# 8. ACCURACY AND DISCLAIMER
-# ==========================================
+with st.container(border=True):
 
-st.markdown(
-    """
-    <div class="disclaimer">
-        <strong>Model performance:</strong><br>
-        94.37% accuracy on a held-out test set of 462 records
-        from the project dataset.
+    st.markdown("**Model performance**")
 
-        <br><br>
+    st.markdown(
+        '<div class="disclaimer-text">'
+        '94.37% accuracy on a held-out test set of 462 records '
+        'from the project dataset.'
+        '</div>',
+        unsafe_allow_html=True
+    )
 
-        <strong>Important:</strong><br>
+    st.markdown("")
+
+    st.markdown("**Important**")
+
+    st.markdown(
+        """
         This is an educational AI project, not a medical
-        diagnostic tool. The reported accuracy reflects
-        performance on this dataset and does not represent
-        real-world clinical accuracy. Predictions and specialist
-        suggestions may be inaccurate. Consult a qualified
-        healthcare professional for medical concerns.
-    </div>
-    """,
-    unsafe_allow_html=True
-)
+        diagnostic tool.
+
+        The reported accuracy reflects performance on this
+        dataset and does not represent real-world clinical accuracy.
+
+        Predictions and specialist suggestions may be inaccurate.
+        Consult a qualified healthcare professional for medical
+        concerns.
+        """
+    )
