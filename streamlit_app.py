@@ -94,20 +94,28 @@ p, label {
 
 /* Buttons */
 .stButton > button {
-    background-color: #263B53;
-    color: white !important;
-    border: 1px solid #263B53;
-    border-radius: 13px;
+    background-color: #263B53 !important;
+    color: #FFFFFF !important;
+    border: 1px solid #263B53 !important;
+    border-radius: 13px !important;
     min-height: 48px;
-    font-size: 15px;
-    font-weight: 600;
+    font-size: 15px !important;
+    font-weight: 600 !important;
     width: 100%;
 }
 
+/* Force button text to remain visible */
+.stButton > button p,
+.stButton > button span,
+.stButton > button div {
+    color: #FFFFFF !important;
+    opacity: 1 !important;
+}
+
 .stButton > button:hover {
-    background-color: #1B2D42;
-    border-color: #1B2D42;
-    color: white !important;
+    background-color: #1B2D42 !important;
+    border-color: #1B2D42 !important;
+    color: #FFFFFF !important;
 }
 
 /* Result cards */
@@ -134,14 +142,22 @@ p, label {
 }
 
 /* Specialist text */
+.specialist-item {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 5px;
+    margin: 12px 0;
+}
+
 .specialist-name {
-    color: #183153;
+    color: #183153 !important;
     font-size: 15px;
     font-weight: 750;
 }
 
 .specialist-detail {
-    color: #596777;
+    color: #596777 !important;
     font-size: 14px;
 }
 
@@ -218,7 +234,12 @@ symptoms = st.text_area(
 col1, col2 = st.columns([4, 1])
 
 with col1:
-    analyse = st.button("Analyse symptoms", use_container_width=True)
+    analyse = st.button(
+        "Analyse symptoms",
+        key="analyse_button",
+        type="primary",
+        use_container_width=True
+    )
 
 with col2:
     st.button(
@@ -276,22 +297,19 @@ if analyse:
                 weight = html.escape(str(row["weight"]))
 
                 if match_type == "Manual project routing":
-
                     detail = "Manual project assignment"
-
                 else:
-
                     detail = f"{match_type}, {weight}"
 
                 specialist_html += f"""
-                <p>
+                <div class="specialist-item">
                     <span class="specialist-name">
                         {specialist}
                     </span>
                     <span class="specialist-detail">
                         — {detail}
                     </span>
-                </p>
+                </div>
                 """
 
         else:
@@ -309,6 +327,11 @@ if analyse:
             </div>
             """,
             unsafe_allow_html=True
+        )
+
+        st.caption(
+            "Specialist suggestions are project-generated routing "
+            "information, not verified medical referrals."
         )
 
 # ==========================================
@@ -334,6 +357,10 @@ st.markdown(
     healthcare professional for medical concerns.
 
     </div>
+    """,
+    unsafe_allow_html=True
+)
+
     """,
     unsafe_allow_html=True
 )
