@@ -338,29 +338,30 @@ if analyse:
 # 8. ACCURACY AND DISCLAIMER
 # ==========================================
 
+# ==========================================
+# 8. ACCURACY AND DISCLAIMER
+# ==========================================
+
 st.markdown(
     """
     <div class="disclaimer">
+        <strong>Model performance:</strong>
+        94.37% accuracy on a held-out test set of 462 records
+        from the project dataset.
 
-    <strong>Model performance:</strong>
-    94.37% accuracy on a held-out test set of 462 records
-    from the project dataset.
+        <br><br>
 
-    <br><br>
-
-    <strong>Important:</strong>
-    This is an educational AI project, not a medical
-    diagnostic tool. The reported accuracy reflects
-    performance on this dataset and does not represent
-    real-world clinical accuracy. Predictions and specialist
-    suggestions may be inaccurate. Consult a qualified
-    healthcare professional for medical concerns.
-
+        <strong>Important:</strong>
+        This is an educational AI project, not a medical
+        diagnostic tool. The reported accuracy reflects
+        performance on this dataset and does not represent
+        real-world clinical accuracy. Predictions and specialist
+        suggestions may be inaccurate. Consult a qualified
+        healthcare professional for medical concerns.
     </div>
     """,
     unsafe_allow_html=True
 )
-
     """,
     unsafe_allow_html=True
 )
